@@ -1,5 +1,0 @@
-{"timestamp":"2025-09-09T10:45:16.790Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"tushargidde007@gmail.com","reason":"user_not_found","pid":23356,"hostname":"MSI"}
-{"timestamp":"2025-09-09T10:54:43.937Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"john@example.com","reason":"user_not_found","pid":23356,"hostname":"MSI"}
-{"timestamp":"2025-09-09T11:31:17.752Z","level":"WARN","message":"Security: missing_auth_token","event":"missing_auth_token","url":"/","method":"POST","ip":"::1","pid":23356,"hostname":"MSI"}
-{"timestamp":"2025-09-09T11:32:02.418Z","level":"WARN","message":"Security: missing_auth_token","event":"missing_auth_token","url":"/","method":"POST","ip":"::1","pid":23356,"hostname":"MSI"}
-{"timestamp":"2025-09-10T06:55:57.458Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"qqqq@gmail.com","userId":6,"reason":"invalid_password","pid":5828,"hostname":"MSI"}
