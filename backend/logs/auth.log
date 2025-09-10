@@ -1,0 +1,10 @@
+{"timestamp":"2025-09-09T10:51:27.184Z","level":"INFO","message":"Auth: user_registered","userId":3,"event":"user_registered","email":"tushargidde007@gmail.com","pid":23356,"hostname":"MSI"}
+{"timestamp":"2025-09-09T10:55:02.357Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":23356,"hostname":"MSI"}
+{"timestamp":"2025-09-09T11:31:52.752Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":23356,"hostname":"MSI"}
+{"timestamp":"2025-09-09T11:40:17.527Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":23356,"hostname":"MSI"}
+{"timestamp":"2025-09-09T12:25:25.929Z","level":"INFO","message":"Auth: user_registered","userId":4,"event":"user_registered","email":"asdf@asdf.com","pid":16468,"hostname":"MSI"}
+{"timestamp":"2025-09-09T12:29:03.481Z","level":"INFO","message":"Auth: user_login","userId":4,"event":"user_login","email":"asdf@asdf.com","pid":16468,"hostname":"MSI"}
+{"timestamp":"2025-09-09T13:15:57.352Z","level":"INFO","message":"Auth: user_registered","userId":5,"event":"user_registered","email":"zxcv@gmail.com","pid":22460,"hostname":"MSI"}
+{"timestamp":"2025-09-10T05:22:35.341Z","level":"INFO","message":"Auth: user_login","userId":4,"event":"user_login","email":"asdf@asdf.com","pid":18100,"hostname":"MSI"}
+{"timestamp":"2025-09-10T06:49:59.445Z","level":"INFO","message":"Auth: user_registered","userId":6,"event":"user_registered","email":"qqqq@gmail.com","pid":5828,"hostname":"MSI"}
+{"timestamp":"2025-09-10T06:56:52.019Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":5828,"hostname":"MSI"}
