@@ -4,7 +4,9 @@ const path = require('path');
 const fs = require('fs');
 const { body, param, query } = require('express-validator');
 const AdminController = require('../controllers/adminController');
+
 const { authenticateToken: auth } = require('../middleware/auth');
+const isAdmin = require('../middleware/isAdmin');
 
 const router = express.Router();
 
@@ -148,6 +150,7 @@ const handleMulterError = (error, req, res, next) => {
  */
 router.post('/questions/import/:id', 
   auth, 
+  isAdmin,
   validateQuizId,
   upload.single('csvFile'),
   handleMulterError,
@@ -161,6 +164,7 @@ router.post('/questions/import/:id',
  */
 router.get('/attempts/export',
   auth,
+  isAdmin,
   validateExportFilters,
   AdminController.exportAttempts
 );
@@ -172,6 +176,7 @@ router.get('/attempts/export',
  */
 router.get('/exports/download/:filename',
   auth,
+  isAdmin,
   AdminController.downloadExport
 );
 
@@ -182,6 +187,7 @@ router.get('/exports/download/:filename',
  */
 router.delete('/questions/:id',
   auth,
+  isAdmin,
   validateQuestionId,
   AdminController.deleteQuestion
 );
@@ -193,6 +199,7 @@ router.delete('/questions/:id',
  */
 router.put('/quizzes/:id/expire',
   auth,
+  isAdmin,
   validateQuizId,
   validateExpiryDate,
   AdminController.setQuizExpiry
@@ -205,6 +212,7 @@ router.put('/quizzes/:id/expire',
  */
 router.get('/bulk-operations/summary',
   auth,
+  isAdmin,
   AdminController.getBulkOperationsSummary
 );
 
@@ -215,6 +223,7 @@ router.get('/bulk-operations/summary',
  */
 router.delete('/questions/bulk',
   auth,
+  isAdmin,
   validateBulkDelete,
   AdminController.bulkDeleteQuestions
 );
@@ -226,6 +235,7 @@ router.delete('/questions/bulk',
  */
 router.post('/exports/cleanup',
   auth,
+  isAdmin,
   AdminController.cleanupExports
 );
 

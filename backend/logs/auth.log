@@ -1,0 +1,4 @@
+{"timestamp":"2025-09-10T13:03:21.413Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
+{"timestamp":"2025-09-10T13:03:27.418Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
+{"timestamp":"2025-09-10T13:03:44.774Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
+{"timestamp":"2025-09-10T13:04:49.121Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
