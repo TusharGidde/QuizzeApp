@@ -1,0 +1,20 @@
+question,option1,option2,option3,option4,option5,option6,correctAnswer,questionType,points
+"What is the main ingredient in bread?","Flour","Sugar","Salt","Butter","","","Flour","single",1
+"Which are primary colors?","Red","Blue","Green","Yellow","Black","White","Red,Blue,Yellow","multiple",2
+"What is the capital of Australia?","Sydney","Melbourne","Canberra","Perth","","","Canberra","single",1
+"Which are mammals?","Whale","Shark","Dolphin","Frog","Bat","Lizard","Whale,Dolphin,Bat","multiple",2
+"What is H2O commonly known as?","Water","Oxygen","Hydrogen","Salt","","","Water","single",1
+"Which are programming languages?","Python","Ruby","HTML","CSS","Java","C++","Python,Ruby,Java,C++","multiple",2
+"Who wrote 'Romeo and Juliet'?","Shakespeare","Dickens","Austen","Hemingway","","","Shakespeare","single",1
+"Which are planets?","Earth","Mars","Sun","Venus","Moon","Jupiter","Earth,Mars,Venus,Jupiter","multiple",2
+"What is the boiling point of water in Celsius?","90","100","110","120","","","100","single",1
+"Which are vegetables?","Carrot","Apple","Potato","Banana","Tomato","Cucumber","Carrot,Potato,Tomato,Cucumber","multiple",2
+"Who painted the Starry Night?","Van Gogh","Picasso","Da Vinci","Rembrandt","","","Van Gogh","single",1
+"Which are web browsers?","Chrome","Firefox","Safari","Windows","Linux","Opera","Chrome,Firefox,Safari,Opera","multiple",2
+"What is the largest planet?","Earth","Mars","Jupiter","Venus","","","Jupiter","single",1
+"Which are renewable energy sources?","Solar","Wind","Coal","Oil","Hydro","Nuclear","Solar,Wind,Hydro","multiple",2
+"What is the chemical symbol for sodium?","Na","S","So","N","","","Na","single",1
+"Which are programming paradigms?","OOP","Functional","Procedural","Linear","Event-driven","Declarative","OOP,Functional,Procedural,Event-driven,Declarative","multiple",2
+"Who discovered America?","Columbus","Magellan","Cook","Vespucci","","","Columbus","single",1
+"Which are search engines?","Google","Bing","Yahoo","DuckDuckGo","Ask","Opera","Google,Bing,Yahoo,DuckDuckGo,Ask","multiple",2
+"What is the capital of Canada?","Toronto","Vancouver","Ottawa","Montreal","","","Ottawa","single",1

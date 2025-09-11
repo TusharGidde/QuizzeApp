@@ -4,8 +4,8 @@ const { AuthenticationError, asyncHandler } = require('./errors');
 const logger = require('../services/loggerService');
 
 // Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+const generateToken = (userId, role) => {
+  return jwt.sign({ userId , role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '2d'
   });
 };
@@ -48,7 +48,8 @@ const optionalAuth = async (req, res, next) => {
 
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findByPk(decoded.userId);
+      const user = User.findByPk(decoded.userId);
+      
       if (user) {
         req.user = user;
       }

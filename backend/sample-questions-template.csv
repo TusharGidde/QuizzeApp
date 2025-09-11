@@ -1,4 +1,36 @@
 question,option1,option2,option3,option4,option5,option6,correctAnswer,questionType,points
+"Which are programming editors?","VS Code","Sublime","Notepad++","Atom","Eclipse","Word","VS Code,Sublime,Notepad++,Atom,Eclipse","multiple",2
+"Who invented the light bulb?","Edison","Tesla","Newton","Curie","","","Edison","single",1
+"Which are continents?","Asia","Europe","Africa","Australia","Greenland","Antarctica","Asia,Europe,Africa,Australia,Antarctica","multiple",2
+"What is the freezing point of water in Celsius?","0","32","100","-10","","","0","single",1
+"Which are animals?","Dog","Cat","Car","Tree","Fish","Bird","Dog,Cat,Fish,Bird","multiple",2
+"Who is the author of 'The Hobbit'?","Tolkien","Rowling","Lewis","Martin","","","Tolkien","single",1
+"What is the capital of Spain?","Madrid","Barcelona","Valencia","Seville","","","Madrid","single",1
+"Which are programming frameworks?","React","Angular","Vue","Django","Flask","Laravel","React,Angular,Vue,Django,Flask,Laravel","multiple",2
+"What is the chemical symbol for iron?","Fe","Ir","In","I","","","Fe","single",1
+"Which are fruits?","Apple","Carrot","Banana","Potato","Mango","Tomato","Apple,Banana,Mango,Tomato","multiple",2
+"Who developed the theory of evolution?","Darwin","Newton","Einstein","Curie","","","Darwin","single",1
+"Which are programming data types?","String","Number","Boolean","Array","Object","Null","String,Number,Boolean,Array,Object,Null","multiple",2
+"What is the capital of Italy?","Rome","Milan","Venice","Florence","","","Rome","single",1
+"Which are programming loops?","for","while","do-while","foreach","switch","if","for,while,do-while,foreach","multiple",2
+"Who wrote 'Pride and Prejudice'?","Austen","Dickens","Shakespeare","Orwell","","","Austen","single",1
+"Which are programming operators?","+","-","*","/","=","%","+,-,*,/,=,%","multiple",2
+"What is the capital of Germany?","Berlin","Munich","Frankfurt","Hamburg","","","Berlin","single",1
+"Which are programming keywords?","if","else","for","while","switch","case","if,else,for,while,switch,case","multiple",2
+"Who is the author of 'Harry Potter'?","Rowling","Tolkien","Lewis","Martin","","","Rowling","single",1
+"What is the capital of Russia?","Moscow","Saint Petersburg","Kazan","Sochi","","","Moscow","single",1
+"Which are programming concepts?","Inheritance","Encapsulation","Polymorphism","Abstraction","Recursion","Iteration","Inheritance,Encapsulation,Polymorphism,Abstraction,Recursion,Iteration","multiple",2
+"What is the chemical symbol for silver?","Ag","Au","Si","S","","","Ag","single",1
+"Which are programming languages?","Go","Rust","Swift","Kotlin","Scala","Perl","Go,Rust,Swift,Kotlin,Scala,Perl","multiple",2
+"Who discovered penicillin?","Fleming","Pasteur","Curie","Newton","","","Fleming","single",1
+"Which are programming libraries?","Lodash","jQuery","D3","TensorFlow","NumPy","Pandas","Lodash,jQuery,D3,TensorFlow,NumPy,Pandas","multiple",2
+"What is the capital of China?","Beijing","Shanghai","Guangzhou","Shenzhen","","","Beijing","single",1
+"Which are programming languages?","Java","C++","Ruby","Python","HTML","CSS","Java,C++,Ruby,Python","multiple",2
+"Who invented the telephone?","Bell","Edison","Tesla","Newton","","","Bell","single",1
+"Which are planets?","Mercury","Venus","Earth","Mars","Jupiter","Pluto","Mercury,Venus,Earth,Mars,Jupiter,Pluto","multiple",2
+"What is the largest mammal?","Elephant","Blue Whale","Giraffe","Hippo","","","Blue Whale","single",1
+"Which are programming editors?","VS Code","Sublime","Notepad++","Atom","Eclipse","Word","VS Code,Sublime,Notepad++,Atom,Eclipse","multiple",2
+"Who wrote '1984'?","Orwell","Huxley","Shakespeare","Dickens","","","Orwell","single",1
 "What is the capital of France?","Paris","London","Berlin","Madrid","","","Paris","single",1
 "Which of the following are programming languages?","JavaScript","Python","HTML","CSS","","","JavaScript,Python","multiple",2
 "What is 2 + 2?","3","4","5","6","","","4","single",1

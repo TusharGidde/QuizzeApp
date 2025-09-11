@@ -147,11 +147,19 @@ Question.prototype.isCorrectAnswer = function(userAnswer) {
     return userAnswer === this.correctAnswer;
   } else {
     // For multiple choice, compare arrays
-    const correctAnswers = this.correctAnswer.split(',').map(a => a.trim()).sort();
+    let correctAnswers = [];
+    if (typeof this.correctAnswer === 'string') {
+      correctAnswers = this.correctAnswer.split(',').map(a => a.trim()).sort();
+    } else if (Array.isArray(this.correctAnswer)) {
+      correctAnswers = this.correctAnswer.map(a => a.toString().trim()).sort();
+    } else {
+      correctAnswers = [];
+    }
+
     const userAnswers = Array.isArray(userAnswer) 
       ? userAnswer.map(a => a.toString().trim()).sort()
-      : userAnswer.split(',').map(a => a.trim()).sort();
-    
+      : (typeof userAnswer === 'string' ? userAnswer.split(',').map(a => a.trim()).sort() : []);
+
     return JSON.stringify(correctAnswers) === JSON.stringify(userAnswers);
   }
 };
@@ -161,21 +169,29 @@ Question.prototype.calculateScore = function(userAnswer) {
     return this.isCorrectAnswer(userAnswer) ? this.points : 0;
   } else {
     // Partial scoring for multiple choice
-    const correctAnswers = this.correctAnswer.split(',').map(a => a.trim());
+    let correctAnswers = [];
+    if (typeof this.correctAnswer === 'string') {
+      correctAnswers = this.correctAnswer.split(',').map(a => a.trim());
+    } else if (Array.isArray(this.correctAnswer)) {
+      correctAnswers = this.correctAnswer.map(a => a.toString().trim());
+    } else {
+      correctAnswers = [];
+    }
+
     const userAnswers = Array.isArray(userAnswer) 
       ? userAnswer.map(a => a.toString().trim())
-      : userAnswer.split(',').map(a => a.trim());
-    
+      : (typeof userAnswer === 'string' ? userAnswer.split(',').map(a => a.trim()) : []);
+
     const correctCount = userAnswers.filter(answer => 
       correctAnswers.includes(answer)
     ).length;
-    
+
     const incorrectCount = userAnswers.filter(answer => 
       !correctAnswers.includes(answer)
     ).length;
-    
+
     // Partial scoring: (correct - incorrect) / total correct * points
-    const score = Math.max(0, (correctCount - incorrectCount) / correctAnswers.length * this.points);
+    const score = Math.max(0, (correctCount - incorrectCount) / (correctAnswers.length || 1) * this.points);
     return Math.round(score * 100) / 100; // Round to 2 decimal places
   }
 };

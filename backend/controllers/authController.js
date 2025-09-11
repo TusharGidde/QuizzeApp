@@ -49,7 +49,7 @@ const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
     logger.logSecurity('failed_login_attempt', { email, reason: 'user_not_found' });
-    throw new AuthenticationError('Invalid email or password');
+    throw new NotFoundError('Invalid email or password');
   }
 
   // Check password
@@ -60,7 +60,7 @@ const login = asyncHandler(async (req, res) => {
   }
 
   // Generate JWT token
-  const token = generateToken(user.id);
+  const token = generateToken(user.id , user.role);
 
   // Log successful login
   logger.logAuth('user_login', user.id, { email });

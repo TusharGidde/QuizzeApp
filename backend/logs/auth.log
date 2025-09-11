@@ -2,3 +2,8 @@
 {"timestamp":"2025-09-10T13:03:27.418Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
 {"timestamp":"2025-09-10T13:03:44.774Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
 {"timestamp":"2025-09-10T13:04:49.121Z","level":"INFO","message":"Auth: user_login","userId":6,"event":"user_login","email":"qqqq@gmail.com","pid":2264,"hostname":"MSI"}
+{"timestamp":"2025-09-11T05:46:34.803Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":15944,"hostname":"MSI"}
+{"timestamp":"2025-09-11T05:49:04.660Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":3060,"hostname":"MSI"}
+{"timestamp":"2025-09-11T06:49:26.687Z","level":"INFO","message":"Auth: user_registered","userId":8,"event":"user_registered","email":"yash@gmail.com","pid":24760,"hostname":"MSI"}
+{"timestamp":"2025-09-11T08:48:21.278Z","level":"INFO","message":"Auth: user_registered","userId":9,"event":"user_registered","email":"temp@gmail.com","pid":24760,"hostname":"MSI"}
+{"timestamp":"2025-09-11T10:02:43.994Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":27512,"hostname":"MSI"}

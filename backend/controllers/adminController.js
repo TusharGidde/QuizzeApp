@@ -20,7 +20,8 @@ class AdminController {
         });
       }
 
-      const { quizId } = req.params;
+      const quizId  = req.params.id;
+      // const quizId = req.params.id;
       
       if (!req.file) {
         return res.status(400).json({
