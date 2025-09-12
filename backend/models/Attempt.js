@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
+const { getPercentageScore, getFormattedTime, toJSON , getBestScoreForUser, getLeaderboard } = require('../utils/attemptUtils');
+
 
 const Attempt = sequelize.define('Attempt', {
   id: {
@@ -147,68 +149,9 @@ const Attempt = sequelize.define('Attempt', {
     }
   ]
 });
+Attempt.prototype.getPercentageScore = getPercentageScore;
+Attempt.prototype.getFormattedTime = getFormattedTime;
+Attempt.prototype.toJSON = toJSON;
 
-// Instance methods
-Attempt.prototype.getPercentageScore = function() {
-  if (this.maxScore === 0) return 0;
-  return Math.round((this.score / this.maxScore) * 100 * 100) / 100; // Round to 2 decimal places
-};
-
-Attempt.prototype.getFormattedTime = function() {
-  const hours = Math.floor(this.timeTaken / 3600);
-  const minutes = Math.floor((this.timeTaken % 3600) / 60);
-  const seconds = this.timeTaken % 60;
-  
-  if (hours > 0) {
-    return `${hours}h ${minutes}m ${seconds}s`;
-  } else if (minutes > 0) {
-    return `${minutes}m ${seconds}s`;
-  } else {
-    return `${seconds}s`;
-  }
-};
-
-Attempt.prototype.toJSON = function() {
-  const values = { ...this.get() };
-  return {
-    ...values,
-    percentageScore: this.getPercentageScore(),
-    formattedTime: this.getFormattedTime()
-  };
-};
-
-// Static methods
-Attempt.getBestScoreForUser = async function(userId, quizId) {
-  return await this.findOne({
-    where: { userId, quizId },
-    order: [['score', 'DESC']],
-    limit: 1
-  });
-};
-
-Attempt.getLeaderboard = async function(quizId, limit = 10) {
-  const { QueryTypes } = require('sequelize');
-  
-  // Get best score per user for the quiz
-  const query = `
-    SELECT 
-      a.user_id,
-      u.name as user_name,
-      MAX(a.score) as best_score,
-      a.max_score,
-      MIN(a.completed_at) as first_completed_at
-    FROM attempts a
-    JOIN users u ON a.user_id = u.id
-    WHERE a.quiz_id = :quizId AND u.deleted_at IS NULL
-    GROUP BY a.user_id, u.name, a.max_score
-    ORDER BY best_score DESC, first_completed_at ASC
-    LIMIT :limit
-  `;
-  
-  return await sequelize.query(query, {
-    replacements: { quizId, limit },
-    type: QueryTypes.SELECT
-  });
-};
 
 module.exports = Attempt;

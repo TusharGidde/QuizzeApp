@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const { sequelize } = require('../config/database');
+const { comparePassword, toJSON } = require('../utils/userUtils');
+
 
 const User = sequelize.define('User', {
   role: {
@@ -91,26 +93,11 @@ const User = sequelize.define('User', {
         const salt = await bcrypt.genSalt(12);
         user.password = await bcrypt.hash(user.password, salt);
       }
-    },
-    beforeUpdate: async (user) => {
-      if (user.changed('password')) {
-        const salt = await bcrypt.genSalt(12);
-        user.password = await bcrypt.hash(user.password, salt);
-      }
     }
   }
 });
 
-// Instance methods
-User.prototype.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
-
-User.prototype.toJSON = function () {
-  const values = { ...this.get() };
-  delete values.password;
-  delete values.deletedAt;
-  return values;
-};
+User.prototype.comparePassword = comparePassword;
+User.prototype.toJSON = toJSON;
 
 module.exports = User;

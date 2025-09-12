@@ -81,7 +81,7 @@ class AnalyticsService {
         ORDER BY date DESC
         LIMIT 30
       `;
-
+      
       const completionTrend = await sequelize.query(completionTrendQuery, {
         replacements,
         type: QueryTypes.SELECT

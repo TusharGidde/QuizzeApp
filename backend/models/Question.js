@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
+const { isCorrectAnswer, calculateScore, toJSON } = require('../utils/questionUtils');
 
 const Question = sequelize.define('Question', {
   id: {
@@ -141,65 +142,9 @@ const Question = sequelize.define('Question', {
   ]
 });
 
-// Instance methods
-Question.prototype.isCorrectAnswer = function(userAnswer) {
-  if (this.questionType === 'single') {
-    return userAnswer === this.correctAnswer;
-  } else {
-    // For multiple choice, compare arrays
-    let correctAnswers = [];
-    if (typeof this.correctAnswer === 'string') {
-      correctAnswers = this.correctAnswer.split(',').map(a => a.trim()).sort();
-    } else if (Array.isArray(this.correctAnswer)) {
-      correctAnswers = this.correctAnswer.map(a => a.toString().trim()).sort();
-    } else {
-      correctAnswers = [];
-    }
+Question.prototype.isCorrectAnswer = isCorrectAnswer;
+Question.prototype.calculateScore = calculateScore;
+Question.prototype.toJSON = toJSON;
 
-    const userAnswers = Array.isArray(userAnswer) 
-      ? userAnswer.map(a => a.toString().trim()).sort()
-      : (typeof userAnswer === 'string' ? userAnswer.split(',').map(a => a.trim()).sort() : []);
-
-    return JSON.stringify(correctAnswers) === JSON.stringify(userAnswers);
-  }
-};
-
-Question.prototype.calculateScore = function(userAnswer) {
-  if (this.questionType === 'single') {
-    return this.isCorrectAnswer(userAnswer) ? this.points : 0;
-  } else {
-    // Partial scoring for multiple choice
-    let correctAnswers = [];
-    if (typeof this.correctAnswer === 'string') {
-      correctAnswers = this.correctAnswer.split(',').map(a => a.trim());
-    } else if (Array.isArray(this.correctAnswer)) {
-      correctAnswers = this.correctAnswer.map(a => a.toString().trim());
-    } else {
-      correctAnswers = [];
-    }
-
-    const userAnswers = Array.isArray(userAnswer) 
-      ? userAnswer.map(a => a.toString().trim())
-      : (typeof userAnswer === 'string' ? userAnswer.split(',').map(a => a.trim()) : []);
-
-    const correctCount = userAnswers.filter(answer => 
-      correctAnswers.includes(answer)
-    ).length;
-
-    const incorrectCount = userAnswers.filter(answer => 
-      !correctAnswers.includes(answer)
-    ).length;
-
-    // Partial scoring: (correct - incorrect) / total correct * points
-    const score = Math.max(0, (correctCount - incorrectCount) / (correctAnswers.length || 1) * this.points);
-    return Math.round(score * 100) / 100; // Round to 2 decimal places
-  }
-};
-
-Question.prototype.toJSON = function() {
-  const values = { ...this.get() };
-  delete values.deletedAt;
-  return values;
-};
 
 module.exports = Question;

@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
+const { isExpired, isActive, toJSON } = require('../utils/quizUtils');
+
 
 const Quiz = sequelize.define('Quiz', {
   id: {
@@ -107,23 +109,8 @@ const Quiz = sequelize.define('Quiz', {
   ]
 });
 
-// Instance methods
-Quiz.prototype.isExpired = function() {
-  return this.expiresAt && new Date() > this.expiresAt;
-};
-
-Quiz.prototype.isActive = function() {
-  return !this.deletedAt && !this.isExpired();
-};
-
-Quiz.prototype.toJSON = function() {
-  const values = { ...this.get() };
-  delete values.deletedAt;
-  return {
-    ...values,
-    isExpired: this.isExpired(),
-    isActive: this.isActive()
-  };
-};
+Quiz.prototype.isExpired = isExpired;
+Quiz.prototype.isActive = isActive;
+Quiz.prototype.toJSON = toJSON;
 
 module.exports = Quiz;

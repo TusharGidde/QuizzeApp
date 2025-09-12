@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME || 'quiz_service',
+  process.env.DB_NAME || 'quiz_service2',
   process.env.DB_USER || 'root',
   process.env.DB_PASSWORD || 'root',
   {

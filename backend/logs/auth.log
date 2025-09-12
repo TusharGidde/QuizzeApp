@@ -7,3 +7,16 @@
 {"timestamp":"2025-09-11T06:49:26.687Z","level":"INFO","message":"Auth: user_registered","userId":8,"event":"user_registered","email":"yash@gmail.com","pid":24760,"hostname":"MSI"}
 {"timestamp":"2025-09-11T08:48:21.278Z","level":"INFO","message":"Auth: user_registered","userId":9,"event":"user_registered","email":"temp@gmail.com","pid":24760,"hostname":"MSI"}
 {"timestamp":"2025-09-11T10:02:43.994Z","level":"INFO","message":"Auth: user_login","userId":3,"event":"user_login","email":"tushargidde007@gmail.com","pid":27512,"hostname":"MSI"}
+{"timestamp":"2025-09-11T12:04:32.036Z","level":"INFO","message":"Auth: user_registered","userId":10,"event":"user_registered","email":"temp1@gmail.com","pid":16252,"hostname":"MSI"}
+{"timestamp":"2025-09-11T12:05:04.158Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":16252,"hostname":"MSI"}
+{"timestamp":"2025-09-12T04:38:12.745Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":21152,"hostname":"MSI"}
+{"timestamp":"2025-09-12T04:39:43.704Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":5260,"hostname":"MSI"}
+{"timestamp":"2025-09-12T04:39:58.947Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":10024,"hostname":"MSI"}
+
+{"timestamp":"2025-09-12T05:07:14.653Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":15524,"hostname":"MSI"}
+{"timestamp":"2025-09-12T09:31:13.753Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":16456,"hostname":"MSI"}
+{"timestamp":"2025-09-12T09:32:22.959Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":16920,"hostname":"MSI"}
+{"timestamp":"2025-09-12T09:32:43.498Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":20244,"hostname":"MSI"}
+{"timestamp":"2025-09-12T09:55:04.231Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":22468,"hostname":"MSI"}
+{"timestamp":"2025-09-12T11:55:42.284Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":12956,"hostname":"MSI"}
+{"timestamp":"2025-09-12T16:46:53.494Z","level":"INFO","message":"Auth: user_login","userId":10,"event":"user_login","email":"temp1@gmail.com","pid":8696,"hostname":"MSI"}

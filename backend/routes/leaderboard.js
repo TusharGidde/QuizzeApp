@@ -1,7 +1,7 @@
 const express = require('express');
 const { body, param, query } = require('express-validator');
 const leaderboardController = require('../controllers/leaderboardController');
-const { authenticateToken, optionalAuth } = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -57,7 +57,6 @@ const validateQuizLeaderboardQuery = [
 router.get('/quiz/:quizId', 
   validateQuizId,
   validateQuizLeaderboardQuery,
-  optionalAuth, // Optional authentication for enhanced features
   leaderboardController.getQuizLeaderboard
 );
 

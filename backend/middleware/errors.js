@@ -129,15 +129,7 @@ const globalErrorHandler = (err, req, res, next) => {
     error = new ValidationError('Unexpected file field');
   }
 
-  // Handle MongoDB/Mongoose errors (if used)
-  if (err.name === 'CastError') {
-    error = new ValidationError('Invalid ID format');
-  }
 
-  if (err.code === 11000) {
-    const field = Object.keys(err.keyValue)[0];
-    error = new ConflictError(`${field} already exists`);
-  }
 
   // Default to AppError if not already an operational error
   if (!error.isOperational) {
@@ -158,10 +150,7 @@ const globalErrorHandler = (err, req, res, next) => {
     }
   };
 
-  // Add details for validation errors
-  if (error instanceof ValidationError && error.details) {
-    response.error.details = error.details;
-  }
+  
 
   // Add stack trace in development
   if (process.env.NODE_ENV === 'development') {

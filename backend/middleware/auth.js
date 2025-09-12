@@ -40,30 +40,8 @@ const authenticateToken = asyncHandler(async (req, res, next) => {
   next();
 });
 
-// Optional authentication middleware (doesn't fail if no token)
-const optionalAuth = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = User.findByPk(decoded.userId);
-      
-      if (user) {
-        req.user = user;
-      }
-    }
-    
-    next();
-  } catch (error) {
-    // Continue without authentication for optional routes
-    next();
-  }
-};
-
 module.exports = {
   generateToken,
   authenticateToken,
-  optionalAuth
+  
 };

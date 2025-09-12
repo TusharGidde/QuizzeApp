@@ -5,8 +5,6 @@ const User = require('./User');
 const Quiz = require('./Quiz');
 const Question = require('./Question');
 const Attempt = require('./Attempt');
-const Notification = require('./Notification');
-const NotificationPreference = require('./NotificationPreference');
 
 // Define associations between models
 const setupAssociations = () => {
@@ -46,35 +44,7 @@ const setupAssociations = () => {
         foreignKey: 'quizId',
         as: 'Quiz'
     });
-
-    // Notification associations
-    Notification.belongsTo(User, {
-        foreignKey: 'userId',
-        as: 'user'
-    });
-
-    Notification.belongsTo(Quiz, {
-        foreignKey: 'relatedQuizId',
-        as: 'quiz'
-    });
-
-    User.hasMany(Notification, {
-        foreignKey: 'userId',
-        as: 'notifications',
-        onDelete: 'CASCADE'
-    });
-
-    // NotificationPreference associations
-    NotificationPreference.belongsTo(User, {
-        foreignKey: 'userId',
-        as: 'user'
-    });
-
-    User.hasOne(NotificationPreference, {
-        foreignKey: 'userId',
-        as: 'notificationPreferences',
-        onDelete: 'CASCADE'
-    });
+    
 };
 
 // Set up all associations
@@ -92,16 +62,6 @@ const connectDB = async () => {
     }
 };
 
-const syncDB = async (options = {}) => {
-    try {
-        await sequelize.sync(options);
-        console.log('Database synchronized successfully.');
-        return true;
-    } catch (error) {
-        console.error('Error synchronizing database:', error);
-        return false;
-    }
-};
 
 // Export models and utilities
 module.exports = {
@@ -110,9 +70,6 @@ module.exports = {
     Quiz,
     Question,
     Attempt,
-    Notification,
-    NotificationPreference,
     connectDB,
-    syncDB,
     setupAssociations
 };

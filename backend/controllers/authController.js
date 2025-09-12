@@ -1,4 +1,7 @@
 const User = require('../models/User');
+const { comparePassword, toJSON } = require('../utils/userUtils');
+User.prototype.comparePassword = comparePassword;
+User.prototype.toJSON = toJSON;
 const { generateToken } = require('../middleware/auth');
 const { 
   asyncHandler, 
@@ -68,7 +71,8 @@ const login = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: {
-      user: user.toJSON(),
+      user: user.name,
+      email: user.email,
       token
     },
     message: 'Login successful'
@@ -86,27 +90,11 @@ const getProfile = asyncHandler(async (req, res) => {
   });
 });
 
-// Refresh token
-const refreshToken = asyncHandler(async (req, res) => {
-  // User is already authenticated by middleware
-  const newToken = generateToken(req.user.id);
 
-  // Log token refresh
-  logger.logAuth('token_refreshed', req.user.id);
-
-  res.json({
-    success: true,
-    data: {
-      token: newToken,
-      user: req.user.toJSON()
-    },
-    message: 'Token refreshed successfully'
-  });
-});
 
 module.exports = {
   register,
   login,
   getProfile,
-  refreshToken
+  
 };
