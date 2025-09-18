@@ -3,13 +3,13 @@ const { comparePassword, toJSON } = require('../utils/userUtils');
 User.prototype.comparePassword = comparePassword;
 User.prototype.toJSON = toJSON;
 const { generateToken } = require('../middleware/auth');
-const { 
-  asyncHandler, 
-  ConflictError, 
+const {
+  asyncHandler,
+  ConflictError,
   AuthenticationError,
-  NotFoundError 
+  NotFoundError
 } = require('../middleware/errors');
-const logger = require('../services/loggerService');
+
 
 // Register new user
 const register = asyncHandler(async (req, res) => {
@@ -32,7 +32,6 @@ const register = asyncHandler(async (req, res) => {
   const token = generateToken(user.id);
 
   // Log successful registration
-  logger.logAuth('user_registered', user.id, { email });
 
   res.status(201).json({
     success: true,
@@ -51,32 +50,35 @@ const login = asyncHandler(async (req, res) => {
   // Find user by email
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    logger.logSecurity('failed_login_attempt', { email, reason: 'user_not_found' });
+    console.log('failed_login_attempt', { email, reason: 'user_not_found' });
     throw new NotFoundError('Invalid email or password');
   }
 
   // Check password
   const isPasswordValid = await user.comparePassword(password);
   if (!isPasswordValid) {
-    logger.logSecurity('failed_login_attempt', { email, userId: user.id, reason: 'invalid_password' });
+    console.log('failed_login_attempt', { email, userId: user.id, reason: 'invalid_password' });
     throw new AuthenticationError('Invalid email or password');
   }
 
   // Generate JWT token
-  const token = generateToken(user.id , user.role);
+  const token = generateToken(user.id, user.role);
 
   // Log successful login
-  logger.logAuth('user_login', user.id, { email });
+  console.log('user_login', user.id, { email });
 
-  res.json({
+  
+  res.status(200).json({
     success: true,
+    token: token,
     data: {
       user: user.name,
       email: user.email,
-      token
+      role: user.role
     },
     message: 'Login successful'
   });
+
 });
 
 // Get current user profile
@@ -96,5 +98,4 @@ module.exports = {
   register,
   login,
   getProfile,
-  
 };

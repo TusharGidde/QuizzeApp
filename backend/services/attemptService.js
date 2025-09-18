@@ -3,60 +3,19 @@ const { Op } = require('sequelize');
 const leaderboardService = require('./leaderboardService');
 
 class AttemptService {
-  /**
-   * Create a new quiz attempt record when user starts a quiz
-   */
-  async startAttempt(userId, quizId, sessionData = {}) {
-    const transaction = await sequelize.transaction();
-    
-    try {
-      // Validate quiz exists and is accessible
-      const quiz = await Quiz.findOne({
-        where: { 
-          id: quizId,
-          deletedAt: null 
-        },
-        transaction
-      });
-
-      if (!quiz) {
-        throw new Error('Quiz not found');
-      }
-
-      if (quiz.isExpired()) {
-        throw new Error('Quiz has expired');
-      }
-
-      // Create session record (we'll store this in memory or Redis in production)
-      const session = {
-        userId,
-        quizId,
-        startTime: new Date(),
-        questions: sessionData.questions || [],
-        timeLimit: quiz.timeLimit,
-        sessionId: `${userId}_${quizId}_${Date.now()}`
-      };
-
-      await transaction.commit();
-      return session;
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
-  }
 
   /**
    * Submit quiz attempt and save to database
    */
-  async submitAttempt(userId, quizId, answers, timeTaken, startTime) {
+  async submitAttempt(userId, quizId, answers, timeTaken) {
     const transaction = await sequelize.transaction();
     
     try {
-      // Validate quiz exists
+      // Validate quiz exists 
       const quiz = await Quiz.findOne({
         where: { 
           id: quizId,
-          deletedAt: null 
+          deletedAt: null
         },
         transaction
       });
@@ -70,10 +29,12 @@ class AttemptService {
         throw new Error('Quiz submission exceeded time limit');
       }
 
+      const asnwerdquestionIds = Object.keys(answers || {}).map(id => parseInt(id));
       // Calculate score using existing quiz service logic
       const questions = await Question.findAll({
         where: { 
           quizId: quizId,
+          id: { [Op.in]: asnwerdquestionIds },
           deletedAt: null 
         },
         transaction
@@ -144,66 +105,10 @@ class AttemptService {
         percentage: Math.round((totalScore / maxScore) * 100)
       };
     } catch (error) {
+      console.error("Submit attempt error:", error);
       await transaction.rollback();
       throw error;
     }
-  }
-
-  /**
-   * Get user's attempt history
-   */
-  async getUserAttempts(userId, filters = {}) {
-    const whereClause = { userId };
-
-    // Add quiz filter if provided
-    if (filters.quizId) {
-      whereClause.quizId = filters.quizId;
-    }
-
-    // Add date range filter if provided
-    if (filters.startDate || filters.endDate) {
-      whereClause.completedAt = {};
-      if (filters.startDate) {
-        whereClause.completedAt[Op.gte] = new Date(filters.startDate);
-      }
-      if (filters.endDate) {
-        whereClause.completedAt[Op.lte] = new Date(filters.endDate);
-      }
-    }
-
-    const attempts = await Attempt.findAll({
-      where: whereClause,
-      include: [
-        {
-          model: Quiz,
-          as: 'quiz',
-          attributes: ['id', 'title', 'category'],
-          where: { deletedAt: null }
-        }
-      ],
-      order: [['completedAt', 'DESC']],
-      limit: filters.limit || 50,
-      offset: filters.offset || 0
-    });
-
-    return attempts;
-  }
-
-  /**
-   * Get user's best attempt for a specific quiz
-   */
-  async getUserBestAttempt(userId, quizId) {
-    return await Attempt.findOne({
-      where: { userId, quizId },
-      include: [
-        {
-          model: Quiz,
-          as: 'quiz',
-          attributes: ['id', 'title', 'category']
-        }
-      ],
-      order: [['score', 'DESC'], ['completedAt', 'ASC']]
-    });
   }
 
   /**
@@ -278,9 +183,9 @@ class AttemptService {
   }
 
   /**
-   * Check if user can start a new attempt (rate limiting)
+   * Check if user can start a new attempt 
    */
-  async canUserStartQuiz(userId, quizId, cooldownHours = 24) {
+  async canUserStartQuiz(userId, quizId, cooldownHours = 12) {
     const recentAttempt = await Attempt.findOne({
       where: {
         userId,

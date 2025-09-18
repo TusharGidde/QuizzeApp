@@ -33,16 +33,8 @@ class LeaderboardController {
         includeUserRank: includeUserRank === 'true',
         userId
       };
-
-      // Try to get cached leaderboard first
-      let leaderboard = await leaderboardService.getCachedLeaderboard(quizId);
       
-      if (!leaderboard) {
-        leaderboard = await leaderboardService.getQuizLeaderboard(quizId, options);
-        
-        // Cache the result
-        await leaderboardService.cacheLeaderboard(quizId, leaderboard);
-      }
+      const leaderboard = await leaderboardService.getQuizLeaderboard(quizId, options);
 
       res.json({
         success: true,

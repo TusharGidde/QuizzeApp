@@ -3,8 +3,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { sequelize } = require('./config/database');
 const { globalErrorHandler, notFoundHandler } = require('./middleware/errors');
-const { apiRateLimit } = require('./middleware/rateLimiter');
-const logger = require('./services/loggerService');
 
 // Import all API routes from routes/index.js
 const apiRoutes = require('./routes');
@@ -39,7 +37,7 @@ app.use(globalErrorHandler);
 const startServer = async () => {
   try {
     await sequelize.authenticate();
-    console.log('[INFO] - Database connection established successfully');
+    console.log('[INFO] - Database connection established successfully in server.js');
     
     app.listen(PORT, () => {
       console.log(`[INFO] - Server is running on port ${PORT}`);

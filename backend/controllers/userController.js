@@ -150,43 +150,7 @@ const getUserHistory = async (req, res) => {
   }
 };
 
-/**
- * Get detailed attempt information
- */
-const getAttemptDetails = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { attemptId } = req.params;
 
-    if (!attemptId || isNaN(parseInt(attemptId))) {
-      return res.status(400).json({
-        success: false,
-        error: { message: 'Valid attempt ID is required' }
-      });
-    }
-
-    const attemptDetails = await UserService.getAttemptDetails(userId, parseInt(attemptId));
-
-    res.json({
-      success: true,
-      data: attemptDetails
-    });
-  } catch (error) {
-    console.error('Get attempt details error:', error);
-    
-    if (error.message === 'Attempt not found') {
-      return res.status(404).json({
-        success: false,
-        error: { message: 'Attempt not found' }
-      });
-    }
-
-    res.status(500).json({
-      success: false,
-      error: { message: 'Failed to fetch attempt details' }
-    });
-  }
-};
 
 /**
  * Get user statistics only
@@ -241,7 +205,6 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   getUserHistory,
-  getAttemptDetails,
   getUserStatistics,
   getRecentActivity
 };

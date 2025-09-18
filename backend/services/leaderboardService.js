@@ -5,92 +5,147 @@ class LeaderboardService {
   /**
    * Get leaderboard for a specific quiz with best scores per user
    */
-  async getQuizLeaderboard(quizId, options = {}) {
-    const {
-      limit = 10,
-      offset = 0,
-      includeUserRank = false,
-      userId = null
-    } = options;
+  //   async getQuizLeaderboard(quizId, options = {}) {
+  //     const {
+  //       limit = 10,
+  //       offset = 0,
+  //       includeUserRank = false,
+  //       userId = null
+  //     } = options;
 
-    try {
-      // Validate quiz exists
-      const quiz = await Quiz.findByPk(quizId, {
-        attributes: ['id', 'title', 'category']
-      });
+  //     try {
+  //       // Validate quiz exists
+  //       const quiz = await Quiz.findByPk(quizId, {
+  //         attributes: ['id', 'title', 'category']
+  //       });
 
-      if (!quiz) {
-        throw new Error('Quiz not found');
-      }
+  //       if (!quiz) {
+  //         throw new Error('Quiz not found');
+  //       }
 
-      // Get leaderboard with best scores per user
-      const query = `
+  //       // Get leaderboard with best scores per user
+  //       const query = `
+  //         SELECT 
+  //     a.user_id AS userId,
+  //     u.name AS userName,
+  //     MAX(a.score) AS bestScore,
+  //     a.max_score AS maxScore,
+  //     MIN(a.completed_at) AS firstCompletedAt,
+  //     COUNT(a.id) AS attemptCount,
+  //     ROUND((MAX(a.score) / a.max_score) * 100, 2) AS percentage,
+  //     ROW_NUMBER() OVER (ORDER BY MAX(a.score) DESC, MIN(a.completed_at) ASC) AS rank
+  // FROM attempts a
+  // JOIN users u ON a.user_id = u.id
+  // WHERE a.quiz_id = :quizId
+  //   AND u.deleted_at IS NULL
+  // GROUP BY a.user_id, u.name, a.max_score
+  // ORDER BY bestScore DESC, firstCompletedAt ASC
+  // LIMIT :limit OFFSET :offset;
+  //       `;
+
+  //       const leaderboard = await sequelize.query(query, {
+  //         replacements: { quizId, limit, offset },
+  //         type: QueryTypes.SELECT,
+  //       });
+
+
+  //       // Get total participants count
+  //       const totalParticipantsQuery = `
+  //         SELECT COUNT(DISTINCT a.user_id) as totalParticipants
+  //         FROM attempts a
+  //         JOIN users u ON a.user_id = u.id
+  //         WHERE a.quiz_id = :quizId AND u.deleted_at IS NULL
+  //       `;
+
+  //       const [{ totalParticipants }] = await sequelize.query(totalParticipantsQuery, {
+  //         replacements: { quizId },
+  //         type: QueryTypes.SELECT
+  //       });
+
+  //       let userRank = null;
+  //       if (includeUserRank && userId) {
+  //         userRank = await this.getUserRankInQuiz(userId, quizId);
+  //       }
+
+  //       return {
+  //         quiz: {
+  //           id: quiz.id,
+  //           title: quiz.title,
+  //           category: quiz.category
+  //         },
+  //         leaderboard: leaderboard.map(entry => ({
+  //           ...entry,
+  //           rank: parseInt(entry.rank),
+  //           bestScore: parseFloat(entry.bestScore),
+  //           maxScore: parseFloat(entry.maxScore),
+  //           percentage: parseFloat(entry.percentage),
+  //           attemptCount: parseInt(entry.attemptCount),
+  //           firstCompletedAt: new Date(entry.firstCompletedAt)
+  //         })),
+  //         pagination: {
+  //           limit,
+  //           offset,
+  //           totalParticipants: parseInt(totalParticipants)
+  //         },
+  //         userRank
+  //       };
+  //     } catch (error) {
+  //       throw new Error(`Failed to get quiz leaderboard: ${error.message}`);
+  //     }
+  //   }
+  // leaderboardService.js
+
+
+  async getQuizLeaderboard(quizId, options) {
+    const { limit, offset, includeUserRank, userId } = options;
+
+    // Main leaderboard query
+    const leaderboardQuery = `
+    SELECT 
+      a.user_id,
+      u.name AS userName,
+      a.score,
+      RANK() OVER (ORDER BY a.score DESC) AS \`rank\`
+    FROM attempts a
+    JOIN users u ON a.user_id = u.id
+    WHERE a.quiz_id = :quizId
+    ORDER BY a.score DESC
+    LIMIT :limit OFFSET :offset
+  `;
+
+    const leaderboard = await sequelize.query(leaderboardQuery, {
+      replacements: { quizId, limit, offset },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    let userRank = null;
+
+    if (includeUserRank && userId) {
+      const userRankQuery = `
+      SELECT \`rank\` FROM (
         SELECT 
-          a.user_id as userId,
-          u.name as userName,
-          MAX(a.score) as bestScore,
-          a.max_score as maxScore,
-          MIN(a.completed_at) as firstCompletedAt,
-          COUNT(a.id) as attemptCount,
-          ROUND((MAX(a.score) / a.max_score) * 100, 2) as percentage,
-          ROW_NUMBER() OVER (ORDER BY MAX(a.score) DESC, MIN(a.completed_at) ASC) as rank
+          a.user_id,
+          RANK() OVER (ORDER BY a.score DESC) AS \`rank\`
         FROM attempts a
-        JOIN users u ON a.user_id = u.id
-        WHERE a.quiz_id = :quizId AND u.deleted_at IS NULL
-        GROUP BY a.user_id, u.name, a.max_score
-        ORDER BY bestScore DESC, firstCompletedAt ASC
-        LIMIT :limit OFFSET :offset
-      `;
+        WHERE a.quiz_id = :quizId
+      ) ranked
+      WHERE user_id = :userId
+    `;
 
-      const leaderboard = await sequelize.query(query, {
-        replacements: { quizId, limit, offset },
-        type: QueryTypes.SELECT
+      const result = await sequelize.query(userRankQuery, {
+        replacements: { quizId, userId },
+        type: sequelize.QueryTypes.SELECT
       });
 
-      // Get total participants count
-      const totalParticipantsQuery = `
-        SELECT COUNT(DISTINCT a.user_id) as totalParticipants
-        FROM attempts a
-        JOIN users u ON a.user_id = u.id
-        WHERE a.quiz_id = :quizId AND u.deleted_at IS NULL
-      `;
-
-      const [{ totalParticipants }] = await sequelize.query(totalParticipantsQuery, {
-        replacements: { quizId },
-        type: QueryTypes.SELECT
-      });
-
-      let userRank = null;
-      if (includeUserRank && userId) {
-        userRank = await this.getUserRankInQuiz(userId, quizId);
-      }
-
-      return {
-        quiz: {
-          id: quiz.id,
-          title: quiz.title,
-          category: quiz.category
-        },
-        leaderboard: leaderboard.map(entry => ({
-          ...entry,
-          rank: parseInt(entry.rank),
-          bestScore: parseFloat(entry.bestScore),
-          maxScore: parseFloat(entry.maxScore),
-          percentage: parseFloat(entry.percentage),
-          attemptCount: parseInt(entry.attemptCount),
-          firstCompletedAt: new Date(entry.firstCompletedAt)
-        })),
-        pagination: {
-          limit,
-          offset,
-          totalParticipants: parseInt(totalParticipants)
-        },
-        userRank
-      };
-    } catch (error) {
-      throw new Error(`Failed to get quiz leaderboard: ${error.message}`);
+      userRank = result.length > 0 ? result[0].rank : null;
     }
+
+    return {
+      leaderboard,
+      userRank
+    };
   }
+
 
   /**
    * Get user's rank in a specific quiz
@@ -164,7 +219,7 @@ class LeaderboardService {
           month: 30,
           year: 365
         };
-        
+
         if (timeframes[timeframe]) {
           dateFilter = 'AND a.completed_at >= DATE_SUB(NOW(), INTERVAL :days DAY)';
           replacements.days = timeframes[timeframe];
@@ -179,26 +234,32 @@ class LeaderboardService {
       }
 
       const query = `
-        SELECT 
-          a.user_id as userId,
-          u.name as userName,
-          COUNT(DISTINCT a.quiz_id) as quizzesCompleted,
-          COUNT(a.id) as totalAttempts,
-          AVG(a.score / a.max_score * 100) as averagePercentage,
-          SUM(a.score) as totalScore,
-          SUM(a.max_score) as totalMaxScore,
-          MAX(a.completed_at) as lastAttemptAt,
-          ROW_NUMBER() OVER (ORDER BY AVG(a.score / a.max_score * 100) DESC, COUNT(DISTINCT a.quiz_id) DESC) as rank
-        FROM attempts a
-        JOIN users u ON a.user_id = u.id
-        JOIN quizzes q ON a.quiz_id = q.id
-        WHERE u.deleted_at IS NULL AND q.deleted_at IS NULL
-        ${dateFilter}
-        ${categoryFilter}
-        GROUP BY a.user_id, u.name
-        HAVING COUNT(DISTINCT a.quiz_id) >= 1
+                        SELECT *,
+              ROW_NUMBER() OVER (ORDER BY averagePercentage DESC, quizzesCompleted DESC) AS row_num
+        FROM (
+          SELECT 
+            a.user_id as userId,
+            u.name as userName,
+            COUNT(DISTINCT a.quiz_id) as quizzesCompleted,
+            COUNT(a.id) as totalAttempts,
+            AVG(a.score / a.max_score * 100) as averagePercentage,
+            SUM(a.score) as totalScore,
+            SUM(a.max_score) as totalMaxScore,
+            MAX(a.completed_at) as lastAttemptAt
+          FROM attempts a
+          JOIN users u ON a.user_id = u.id
+          JOIN quizzes q ON a.quiz_id = q.id
+          WHERE u.deleted_at IS NULL AND q.deleted_at IS NULL
+          ${dateFilter}
+          ${categoryFilter}
+          GROUP BY a.user_id, u.name
+          HAVING COUNT(DISTINCT a.quiz_id) >= 1
+        ) AS leaderboard_data
         ORDER BY averagePercentage DESC, quizzesCompleted DESC
-        LIMIT :limit OFFSET :offset
+        LIMIT :limit OFFSET :offset;
+
+
+
       `;
 
       const leaderboard = await sequelize.query(query, {
@@ -340,42 +401,14 @@ class LeaderboardService {
     // TODO: Implement Redis caching
     // For now, we'll use in-memory caching as a placeholder
     const cacheKey = `leaderboard:quiz:${quizId}`;
-    
+
     // In production, this would be:
     // await redis.setex(cacheKey, ttl, JSON.stringify(leaderboardData));
-    
+
     // For now, just return the data
     return leaderboardData;
   }
 
-  /**
-   * Get cached leaderboard data (placeholder for Redis implementation)
-   */
-  async getCachedLeaderboard(quizId) {
-    // TODO: Implement Redis caching
-    // For now, return null to indicate no cache
-    const cacheKey = `leaderboard:quiz:${quizId}`;
-    
-    // In production, this would be:
-    // const cached = await redis.get(cacheKey);
-    // return cached ? JSON.parse(cached) : null;
-    
-    return null;
-  }
-
-  /**
-   * Invalidate leaderboard cache when new attempts are submitted
-   */
-  async invalidateLeaderboardCache(quizId) {
-    // TODO: Implement Redis cache invalidation
-    // For now, this is a placeholder
-    const cacheKey = `leaderboard:quiz:${quizId}`;
-    
-    // In production, this would be:
-    // await redis.del(cacheKey);
-    
-    return true;
-  }
 }
 
 module.exports = new LeaderboardService();

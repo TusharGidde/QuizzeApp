@@ -16,13 +16,9 @@ router.post('/:id/submit', authenticateToken, quizValidation.submit, quizControl
 router.get('/:id/leaderboard', quizController.getQuizLeaderboard);
 
 // User attempt routes
-router.get('/attempts/history', authenticateToken, quizController.getUserAttempts);
-router.get('/attempts/statistics', authenticateToken, quizController.getUserStatistics);
-router.get('/attempts/:attemptId', authenticateToken, quizController.getAttemptDetails);
 
 // Admin routes (authentication required - admin role check can be added later)
 router.post('/', authenticateToken, isAdmin, quizValidation.create, quizController.createQuiz);
-router.put('/:id', authenticateToken,isAdmin, quizValidation.update, quizController.updateQuiz);
 router.delete('/:id', authenticateToken,isAdmin, quizValidation.delete, quizController.deleteQuiz);
 
 module.exports = router;

@@ -21,47 +21,34 @@ const setupAssociations = () => {
         as: 'questions',
         onDelete: 'CASCADE'
     });
-
+    
     Quiz.hasMany(Attempt, {
         foreignKey: 'quizId',
         as: 'attempts',
         onDelete: 'CASCADE'
     });
-
+    
     // Question associations
     Question.belongsTo(Quiz, {
         foreignKey: 'quizId',
         as: 'quiz'
     });
-
+    
     // Attempt associations
     Attempt.belongsTo(User, {
         foreignKey: 'userId',
         as: 'User'
     });
-
+    
     Attempt.belongsTo(Quiz, {
         foreignKey: 'quizId',
-        as: 'Quiz'
+        as: 'quiz'
     });
-    
+
 };
 
 // Set up all associations
 setupAssociations();
-
-// Database connection and sync methods
-const connectDB = async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Database connection established successfully.');
-        return true;
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-        return false;
-    }
-};
-
 
 // Export models and utilities
 module.exports = {
@@ -70,6 +57,5 @@ module.exports = {
     Quiz,
     Question,
     Attempt,
-    connectDB,
     setupAssociations
 };

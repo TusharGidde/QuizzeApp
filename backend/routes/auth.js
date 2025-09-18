@@ -6,10 +6,10 @@ const {
   register,
   login,
   getProfile,
+  me,
 } = require('../controllers/authController');
 
 const { authenticateToken } = require('../middleware/auth');
-const { authRateLimit } = require('../middleware/rateLimiter');
 
 const {
   validateRegistration,
@@ -17,10 +17,11 @@ const {
 } = require('../middleware/validation');
 
 // Public routes
-router.post('/register', authRateLimit, validateRegistration, register);
-router.post('/login', authRateLimit, validateLogin, login);
+router.post('/register', validateRegistration, register);
+router.post('/login', validateLogin, login);
 
 // Protected routes (require authentication)
 router.get('/profile', authenticateToken, getProfile);
+
 
 module.exports = router;

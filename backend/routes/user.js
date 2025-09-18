@@ -5,9 +5,6 @@ const {
   getUserProfile,
   updateUserProfile,
   getUserHistory,
-  getAttemptDetails,
-  getUserStatistics,
-  getRecentActivity
 } = require('../controllers/userController');
 
 const router = express.Router();
@@ -87,34 +84,7 @@ router.get('/history', [
     .withMessage('Sort order must be ASC or DESC')
 ], getUserHistory);
 
-/**
- * @route   GET /api/users/attempts/:attemptId
- * @desc    Get detailed information about a specific attempt
- * @access  Private
- */
-router.get('/attempts/:attemptId', [
-  param('attemptId')
-    .isInt({ min: 1 })
-    .withMessage('Attempt ID must be a positive integer')
-], getAttemptDetails);
 
-/**
- * @route   GET /api/users/statistics
- * @desc    Get user statistics only
- * @access  Private
- */
-router.get('/statistics', getUserStatistics);
 
-/**
- * @route   GET /api/users/recent-activity
- * @desc    Get user's recent quiz attempts
- * @access  Private
- */
-router.get('/recent-activity', [
-  query('limit')
-    .optional()
-    .isInt({ min: 1, max: 20 })
-    .withMessage('Limit must be between 1 and 20')
-], getRecentActivity);
 
 module.exports = router;

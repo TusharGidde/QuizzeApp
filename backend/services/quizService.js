@@ -52,18 +52,9 @@ class QuizService {
   /**
    * Get quiz by ID with questions
    */
-  async getQuizById(quizId, includeQuestions = false) {
+  async getQuizById(quizId) {
     const includeOptions = [];
-    
-    if (includeQuestions) {
-      includeOptions.push({
-        model: Question,
-        as: 'questions',
-        where: { deletedAt: null },
-        required: false,
-        order: [['createdAt', 'ASC']]
-      });
-    }
+
 
     const quiz = await Quiz.findOne({
       where: { 

@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
-const authRoutes = require('./auth');
-const quizRoutes = require('./quiz');
+const authRoutes = require('./auth'); //done
+const quizRoutes = require('./quiz'); //
 const questionRoutes = require('./question');
 const leaderboardRoutes = require('./leaderboard');
 const userRoutes = require('./user');

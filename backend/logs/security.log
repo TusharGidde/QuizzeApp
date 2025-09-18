@@ -1,8 +1,0 @@
-{"timestamp":"2025-09-10T13:03:08.303Z","level":"WARN","message":"Security: missing_auth_token","event":"missing_auth_token","url":"/1/start","method":"POST","ip":"::1","pid":2264,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:44:21.325Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":4164,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:45:19.467Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":15944,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:46:01.194Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":15944,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:46:12.951Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":15944,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:46:56.983Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":15944,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:47:34.959Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":15944,"hostname":"MSI"}
-{"timestamp":"2025-09-11T05:47:49.585Z","level":"WARN","message":"Security: failed_login_attempt","event":"failed_login_attempt","email":"admin@gmail.com","userId":7,"reason":"invalid_password","pid":12656,"hostname":"MSI"}

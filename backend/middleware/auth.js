@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { AuthenticationError, asyncHandler } = require('./errors');
-const logger = require('../services/loggerService');
 
 // Generate JWT token
 const generateToken = (userId, role) => {
@@ -12,11 +11,11 @@ const generateToken = (userId, role) => {
 
 // Verify JWT token middleware
 const authenticateToken = asyncHandler(async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+const authHeader = req.headers['authorization'];   
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
   if (!token) {
-    logger.logSecurity('missing_auth_token', { 
+    console.log('missing_auth_token', { 
       url: req.url, 
       method: req.method,
       ip: req.ip 
@@ -28,7 +27,7 @@ const authenticateToken = asyncHandler(async (req, res, next) => {
   const user = await User.findByPk(decoded.userId);
 
   if (!user) {
-    logger.logSecurity('invalid_token_user_not_found', { 
+    console.log('invalid_token_user_not_found', { 
       userId: decoded.userId,
       url: req.url,
       ip: req.ip 

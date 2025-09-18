@@ -188,60 +188,7 @@ class UserService {
     }
   }
 
-  /**
-   * Get detailed attempt history with score breakdown
-   * @param {number} userId - The user ID
-   * @param {number} attemptId - Specific attempt ID (optional)
-   * @returns {Object} Detailed attempt information
-   */
-  static async getAttemptDetails(userId, attemptId) {
-    try {
-      const attempt = await Attempt.findOne({
-        where: { 
-          id: attemptId,
-          userId 
-        },
-        include: [{
-          model: Quiz,
-          as: 'quiz',
-          attributes: ['id', 'title', 'category', 'description'],
-          include: [{
-            model: require('../models/Question'),
-            as: 'questions',
-            attributes: ['id', 'question', 'options', 'correctAnswer', 'questionType', 'points']
-          }]
-        }]
-      });
-
-      if (!attempt) {
-        throw new Error('Attempt not found');
-      }
-
-      // Calculate detailed score breakdown
-      const scoreBreakdown = this.calculateScoreBreakdown(attempt);
-
-      return {
-        id: attempt.id,
-        score: attempt.score,
-        maxScore: attempt.maxScore,
-        percentageScore: attempt.getPercentageScore(),
-        timeTaken: attempt.timeTaken,
-        formattedTime: attempt.getFormattedTime(),
-        completedAt: attempt.completedAt,
-        quiz: {
-          id: attempt.quiz.id,
-          title: attempt.quiz.title,
-          category: attempt.quiz.category,
-          description: attempt.quiz.description
-        },
-        scoreBreakdown,
-        answers: attempt.answers
-      };
-    } catch (error) {
-      console.error('Error getting attempt details:', error);
-      throw new Error('Failed to get attempt details');
-    }
-  }
+ 
 
   /**
    * Calculate detailed score breakdown for an attempt
