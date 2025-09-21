@@ -3,7 +3,6 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { login } from "../../services/authServices";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext"; // ✅ import context
-import { Navigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });

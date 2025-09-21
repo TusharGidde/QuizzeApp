@@ -72,94 +72,6 @@ const asyncHandler = (fn) => {
   };
 };
 
-// Global error handling middleware
-const globalErrorHandler = (err, req, res, next) => {
-  let error = { ...err };
-  error.message = err.message;
-
-  // Log error for monitoring
-  console.error('Error:', {
-    message: err.message,
-    stack: err.stack,
-    url: req.url,
-    method: req.method,
-    ip: req.ip,
-    userAgent: req.get('User-Agent'),
-    timestamp: new Date().toISOString()
-  });
-
-  // Handle Sequelize errors
-  if (err.name === 'SequelizeValidationError') {
-    const details = err.errors.map(error => ({
-      field: error.path,
-      message: error.message,
-      value: error.value
-    }));
-    error = new ValidationError('Database validation failed', details);
-  }
-
-  if (err.name === 'SequelizeUniqueConstraintError') {
-    const field = err.errors[0]?.path || 'field';
-    error = new ConflictError(`${field} already exists`);
-  }
-
-  if (err.name === 'SequelizeForeignKeyConstraintError') {
-    error = new ValidationError('Invalid reference to related resource');
-  }
-
-  if (err.name === 'SequelizeConnectionError' || err.name === 'SequelizeDatabaseError') {
-    error = new DatabaseError('Database connection failed');
-  }
-
-  // Handle JWT errors
-  if (err.name === 'JsonWebTokenError') {
-    error = new AuthenticationError('Invalid token');
-  }
-
-  if (err.name === 'TokenExpiredError') {
-    error = new AuthenticationError('Token expired');
-  }
-
-  // Handle Multer errors (file upload)
-  if (err.code === 'LIMIT_FILE_SIZE') {
-    error = new ValidationError('File size too large');
-  }
-
-  if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-    error = new ValidationError('Unexpected file field');
-  }
-
-
-
-  // Default to AppError if not already an operational error
-  if (!error.isOperational) {
-    error = new AppError(
-      process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message,
-      500,
-      'INTERNAL_SERVER_ERROR'
-    );
-  }
-
-  // Send error response
-  const response = {
-    success: false,
-    error: {
-      message: error.message,
-      code: error.errorCode || 'UNKNOWN_ERROR',
-      statusCode: error.statusCode || 500
-    }
-  };
-
-  
-
-  // Add stack trace in development
-  if (process.env.NODE_ENV === 'development') {
-    response.error.stack = err.stack;
-  }
-
-  res.status(error.statusCode || 500).json(response);
-};
-
 // 404 handler for undefined routes
 const notFoundHandler = (req, res, next) => {
   const error = new NotFoundError(`Route ${req.originalUrl} not found`);
@@ -177,6 +89,5 @@ module.exports = {
   ExternalServiceError,
   handleValidationErrors,
   asyncHandler,
-  globalErrorHandler,
   notFoundHandler
 };

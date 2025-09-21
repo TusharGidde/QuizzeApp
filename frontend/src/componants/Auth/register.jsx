@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../../services/authServices";
+import { login, signup } from "../../services/authServices";
+import { useAuth } from "../../context/authContext"; // 
 
 const register = () => {
   const [formData, setFormData] = useState({
@@ -15,48 +16,120 @@ const register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { setData } = useAuth(); 
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrors({});
+  // async function handleSubmit(e) {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   setErrors({});
 
-    const newErrors = {};
-    if (!formData.name) newErrors.name = "Name is required";
+  //   const newErrors = {};
+  //   if (!formData.name) newErrors.name = "Name is required";
 
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email))
-      newErrors.email = "Email is invalid";
+  //   if (!formData.email) newErrors.email = "Email is required";
+  //   else if (!/\S+@\S+\.\S+/.test(formData.email))
+  //     newErrors.email = "Email is invalid";
 
-    if (!formData.password) newErrors.password = "Password is required";
-    else if (formData.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
+  //   if (!formData.password) newErrors.password = "Password is required";
+  //   else if (formData.password.length < 6)
+  //     newErrors.password = "Password must be at least 6 characters";
 
-    if (!formData.confirmPassword)
-      newErrors.confirmPassword = "Confirm password is required";
-    else if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+  //   if (!formData.confirmPassword)
+  //     newErrors.confirmPassword = "Confirm password is required";
+  //   else if (formData.password !== formData.confirmPassword)
+  //     newErrors.confirmPassword = "Passwords do not match";
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      setIsLoading(false);
-      return;
-    }
+  //   if (Object.keys(newErrors).length > 0) {
+  //     setErrors(newErrors);
+  //     setIsLoading(false);
+  //     return;
+  //   }
 
 
-    // Simulate API call
-    const res = signup(formData);
+  //   // Simulate API call
+  //   const res = signup(formData);
+  //   if (res.error) {
+  //     setErrors({ apiError: res.error });
+  //     setIsLoading(false);
+  //     return;
+  //   }
+  //   console.log("Register data:", formData);
+  //   navigate("/dashboard");
+  //   setIsLoading(false);
+
+  //   //auto login after signup
+  //   try{
+  //     // ✅ API call
+  //     const data = await login(formData);
+  //     console.log("✅ Login success:", data);
+
+  //     // ✅ Save user in context
+  //     setData({
+  //       name: data.data.user,
+  //       email: data.data.email,
+  //       role: data.data.role,
+  //     });
+  //   }catch (err) {
+  //     console.error("❌ Login error:", err);
+  //     setErrors({ apiError: err.message });
+  //     setIsLoading(false);
+  //     return;
+  //   }
+  // }
+
+  async function handleSubmit(e) {
+  e.preventDefault();
+  setIsLoading(true);
+  setErrors({});
+
+  const newErrors = {};
+  if (!formData.name) newErrors.name = "Name is required";
+
+  if (!formData.email) newErrors.email = "Email is required";
+  else if (!/\S+@\S+\.\S+/.test(formData.email))
+    newErrors.email = "Email is invalid";
+
+  if (!formData.password) newErrors.password = "Password is required";
+  else if (formData.password.length < 6)
+    newErrors.password = "Password must be at least 6 characters";
+
+  if (!formData.confirmPassword)
+    newErrors.confirmPassword = "Confirm password is required";
+  else if (formData.password !== formData.confirmPassword)
+    newErrors.confirmPassword = "Passwords do not match";
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    // ✅ Await signup API
+    const res = await signup(formData);
+
     if (res.error) {
       setErrors({ apiError: res.error });
-      setIsLoading(false);
       return;
     }
-    navigate("/login");
+
+    // ✅ Save user & token in context (adjust keys to your backend response)
+    setData({
+      name: res.data.user.name,
+      email: res.data.user.email,
+      role: res.data.user.role,
+    });
 
 
-    console.log("Register data:", formData);
+    // ✅ Navigate after storing auth data
+  } catch (err) {
+    setErrors({ apiError: "Something went wrong. Please try again." });
+  } finally {
     setIsLoading(false);
+    navigate("/");
   }
+}
+
 
   function handleInputChange(e) {
     const { name, value } = e.target;

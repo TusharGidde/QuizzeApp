@@ -38,9 +38,6 @@ class UserService {
         raw: true
       });
 
-      // Get category breakdown
-      const categoryStats = await this.getUserCategoryStats(userId);
-
       return {
         totalAttempts: parseInt(result.totalQuizzes) || 0,
         uniqueQuizzes: parseInt(uniqueQuizzes[0].uniqueQuizzes) || 0,
@@ -50,7 +47,6 @@ class UserService {
         bestScore: parseFloat(result.bestScore) || 0,
         worstScore: parseFloat(result.worstScore) || 0,
         averageTimeMinutes: result.averageTime ? Math.round(result.averageTime / 60 * 100) / 100 : 0,
-        categoryBreakdown: categoryStats
       };
     } catch (error) {
       console.error('Error calculating user statistics:', error);
@@ -58,46 +54,7 @@ class UserService {
     }
   }
 
-  /**
-   * Get user statistics by category
-   * @param {number} userId - The user ID
-   * @returns {Array} Category statistics
-   */
-  static async getUserCategoryStats(userId) {
-    try {
-      const categoryStats = await Attempt.findAll({
-        where: { userId },
-        include: [{
-          model: Quiz,
-          as: 'quiz',
-          attributes: ['category'],
-          where: { deletedAt: null }
-        }],
-        attributes: [
-          [sequelize.col('quiz.category'), 'category'],
-          [sequelize.fn('COUNT', sequelize.col('Attempt.id')), 'attempts'],
-          [sequelize.fn('AVG', sequelize.col('Attempt.score')), 'averageScore'],
-          [sequelize.fn('AVG', sequelize.col('Attempt.max_score')), 'averageMaxScore'],
-          [sequelize.fn('MAX', sequelize.col('Attempt.score')), 'bestScore']
-        ],
-        group: ['quiz.category'],
-        raw: true
-      });
 
-      return categoryStats.map(stat => ({
-        category: stat.category,
-        attempts: parseInt(stat.attempts),
-        averageScore: parseFloat(stat.averageScore) || 0,
-        averagePercentage: stat.averageMaxScore > 0 
-          ? Math.round((stat.averageScore / stat.averageMaxScore) * 100 * 100) / 100
-          : 0,
-        bestScore: parseFloat(stat.bestScore) || 0
-      }));
-    } catch (error) {
-      console.error('Error getting category stats:', error);
-      throw new Error('Failed to get category statistics');
-    }
-  }
 
   /**
    * Get user attempt history with filtering options

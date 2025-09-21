@@ -73,46 +73,6 @@ const validateExpiryDate = [
     })
 ];
 
-const validateBulkDelete = [
-  body('questionIds')
-    .isArray({ min: 1 })
-    .withMessage('Question IDs must be a non-empty array')
-    .custom((questionIds) => {
-      if (!questionIds.every(id => Number.isInteger(id) && id > 0)) {
-        throw new Error('All question IDs must be positive integers');
-      }
-      return true;
-    })
-];
-
-const validateExportFilters = [
-  query('quizId')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('Quiz ID must be a positive integer'),
-  query('userId')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('User ID must be a positive integer'),
-  query('startDate')
-    .optional()
-    .isISO8601()
-    .withMessage('Start date must be a valid ISO 8601 date'),
-  query('endDate')
-    .optional()
-    .isISO8601()
-    .withMessage('End date must be a valid ISO 8601 date')
-    .custom((endDate, { req }) => {
-      if (req.query.startDate && endDate) {
-        const start = new Date(req.query.startDate);
-        const end = new Date(endDate);
-        if (end <= start) {
-          throw new Error('End date must be after start date');
-        }
-      }
-      return true;
-    })
-];
 
 // Error handling middleware for multer
 const handleMulterError = (error, req, res, next) => {
@@ -157,28 +117,7 @@ router.post('/questions/import/:id',
   AdminController.importQuestions
 );
 
-/**
- * @route   GET /api/admin/attempts/export
- * @desc    Export quiz attempts to CSV
- * @access  Private (Admin)
- */
-router.get('/attempts/export',
-  auth,
-  isAdmin,
-  validateExportFilters,
-  AdminController.exportAttempts
-);
 
-/**
- * @route   GET /api/admin/exports/download/:filename
- * @desc    Download exported CSV file
- * @access  Private (Admin)
- */
-router.get('/exports/download/:filename',
-  auth,
-  isAdmin,
-  AdminController.downloadExport
-);
 
 /**
  * @route   DELETE /api/admin/questions/:id
@@ -205,38 +144,5 @@ router.put('/quizzes/:id/expire',
   AdminController.setQuizExpiry
 );
 
-/**
- * @route   GET /api/admin/bulk-operations/summary
- * @desc    Get summary for bulk operations
- * @access  Private (Admin)
- */
-router.get('/bulk-operations/summary',
-  auth,
-  isAdmin,
-  AdminController.getBulkOperationsSummary
-);
-
-/**
- * @route   DELETE /api/admin/questions/bulk
- * @desc    Bulk delete questions
- * @access  Private (Admin)
- */
-router.delete('/questions/bulk',
-  auth,
-  isAdmin,
-  validateBulkDelete,
-  AdminController.bulkDeleteQuestions
-);
-
-/**
- * @route   POST /api/admin/exports/cleanup
- * @desc    Clean up old export files
- * @access  Private (Admin)
- */
-router.post('/exports/cleanup',
-  auth,
-  isAdmin,
-  AdminController.cleanupExports
-);
 
 module.exports = router;

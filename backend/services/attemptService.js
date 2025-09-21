@@ -200,61 +200,6 @@ class AttemptService {
     return !recentAttempt;
   }
 
-  /**
-   * Validate quiz session (for time tracking and security)
-   */
-  validateSession(session, currentTime = new Date()) {
-    if (!session || !session.startTime) {
-      throw new Error('Invalid session');
-    }
-
-    const elapsedTime = Math.floor((currentTime - new Date(session.startTime)) / 1000);
-    
-    // Check if time limit exceeded (if set)
-    if (session.timeLimit && elapsedTime > session.timeLimit * 60) {
-      throw new Error('Time limit exceeded');
-    }
-
-    return {
-      isValid: true,
-      elapsedTime,
-      remainingTime: session.timeLimit ? (session.timeLimit * 60) - elapsedTime : null
-    };
-  }
-
-  /**
-   * Get attempt details by ID
-   */
-  async getAttemptById(attemptId, userId = null) {
-    const whereClause = { id: attemptId };
-    
-    // If userId provided, ensure user can only access their own attempts
-    if (userId) {
-      whereClause.userId = userId;
-    }
-
-    const attempt = await Attempt.findOne({
-      where: whereClause,
-      include: [
-        {
-          model: Quiz,
-          as: 'quiz',
-          attributes: ['id', 'title', 'category', 'description']
-        },
-        {
-          model: User,
-          as: 'user',
-          attributes: ['id', 'name']
-        }
-      ]
-    });
-
-    if (!attempt) {
-      throw new Error('Attempt not found');
-    }
-
-    return attempt;
-  }
 }
 
 module.exports = new AttemptService();

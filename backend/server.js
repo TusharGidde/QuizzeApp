@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { sequelize } = require('./config/database');
-const { globalErrorHandler, notFoundHandler } = require('./middleware/errors');
+const { notFoundHandler } = require('./middleware/errors');
 
 // Import all API routes from routes/index.js
 const apiRoutes = require('./routes');
@@ -31,8 +31,6 @@ app.use('/api', apiRoutes);
 // 404 handler for undefined routes
 app.use(notFoundHandler);
 
-// Global error handling middleware
-app.use(globalErrorHandler);
 
 const startServer = async () => {
   try {

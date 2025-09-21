@@ -29,6 +29,9 @@ export const signup = async (formData) => {
       email,
       password,
     });
+    login({ email, password });
+    localStorage.setItem("token", response.data.token); 
+    
     return response.data;
   } catch (err) {
     throw new Error(

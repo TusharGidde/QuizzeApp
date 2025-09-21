@@ -60,17 +60,6 @@ router.get('/quiz/:quizId',
   leaderboardController.getQuizLeaderboard
 );
 
-/**
- * @route   GET /api/leaderboard/quiz/:quizId/user/:userId/rank
- * @desc    Get user's rank in a specific quiz
- * @access  Private (user can only access their own rank)
- */
-router.get('/quiz/:quizId/user/:userId/rank',
-  validateQuizId,
-  validateUserId,
-  authenticateToken,
-  leaderboardController.getUserRankInQuiz
-);
 
 /**
  * @route   GET /api/leaderboard/global
@@ -82,38 +71,7 @@ router.get('/global',
   leaderboardController.getGlobalLeaderboard
 );
 
-/**
- * @route   GET /api/leaderboard/quiz/:quizId/stats
- * @desc    Get leaderboard statistics for a quiz
- * @access  Public
- */
-router.get('/quiz/:quizId/stats',
-  validateQuizId,
-  leaderboardController.getQuizLeaderboardStats
-);
 
-/**
- * @route   GET /api/leaderboard/recent-high-scores
- * @desc    Get recent high scores across all quizzes
- * @access  Public
- */
-router.get('/recent-high-scores',
-  query('limit')
-    .optional()
-    .isInt({ min: 1, max: 50 })
-    .withMessage('Limit must be between 1 and 50'),
-  leaderboardController.getRecentHighScores
-);
 
-/**
- * @route   POST /api/leaderboard/quiz/:quizId/refresh
- * @desc    Refresh leaderboard cache for a quiz
- * @access  Private (admin only in production)
- */
-router.post('/quiz/:quizId/refresh',
-  validateQuizId,
-  authenticateToken,
-  leaderboardController.refreshQuizLeaderboard
-);
 
 module.exports = router;

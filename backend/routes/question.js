@@ -12,7 +12,4 @@ router.post('/', authenticateToken, questionValidation.create,isAdmin, questionC
 router.put('/:id', authenticateToken, questionValidation.update,isAdmin, questionController.updateQuestion);
 router.delete('/:id', authenticateToken, questionValidation.delete,isAdmin, questionController.deleteQuestion);
 
-// Bulk operations
-router.post('/quiz/:quizId/bulk', authenticateToken, questionValidation.bulkCreate, questionController.bulkCreateQuestions);
-
 module.exports = router;

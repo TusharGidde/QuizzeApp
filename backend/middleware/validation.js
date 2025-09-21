@@ -170,54 +170,8 @@ const questionValidation = {
       .withMessage('Question ID must be a positive integer')
   ],
 
-  bulkCreate: [
-    param('quizId')
-      .isInt({ min: 1 })
-      .withMessage('Quiz ID must be a positive integer'),
-    body('questions')
-      .isArray({ min: 1 })
-      .withMessage('Questions must be a non-empty array'),
-    body('questions.*.question')
-      .trim()
-      .isLength({ min: 10, max: 2000 })
-      .withMessage('Each question must be between 10 and 2000 characters'),
-    body('questions.*.options')
-      .isArray({ min: 2, max: 6 })
-      .withMessage('Each question must have 2-6 options'),
-    body('questions.*.correctAnswer')
-      .trim()
-      .isLength({ min: 1 })
-      .withMessage('Each question must have a correct answer'),
-    body('questions.*.questionType')
-      .optional()
-      .isIn(['single', 'multiple'])
-      .withMessage('Question type must be either single or multiple'),
-    body('questions.*.points')
-      .optional()
-      .isInt({ min: 1, max: 10 })
-      .withMessage('Points must be between 1 and 10')
-  ]
 };
 
-// Query parameter validation
-const queryValidation = {
-  quizFilters: [
-    query('category')
-      .optional()
-      .trim()
-      .isLength({ min: 1, max: 100 })
-      .withMessage('Category must be between 1 and 100 characters'),
-    query('search')
-      .optional()
-      .trim()
-      .isLength({ min: 1, max: 255 })
-      .withMessage('Search term must be between 1 and 255 characters'),
-    query('includeExpired')
-      .optional()
-      .isBoolean()
-      .withMessage('includeExpired must be a boolean')
-  ]
-};
 
 // Auth validation rules
 const validateRegistration = [
@@ -251,7 +205,6 @@ const validateLogin = [
 module.exports = {
   quizValidation,
   questionValidation,
-  queryValidation,
   validateRegistration,
   validateLogin
 };
