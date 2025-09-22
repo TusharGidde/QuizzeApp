@@ -23,17 +23,6 @@
 
         {/* Right side */}
         <div className="flex items-center gap-4">
-          {/* 🌙 Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-          >
-            {theme === "light" ? (
-              <Moon className="w-5 h-5" />
-            ) : (
-              <Sun className="w-5 h-5" />
-            )}
-          </button>
           {!user ? (
             <>
               <Link

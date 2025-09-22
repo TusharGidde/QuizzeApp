@@ -1,7 +1,21 @@
 question,option1,option2,option3,option4,option5,option6,correctAnswer,questionType,points
-"What 2 + 91 ","4","2","22","0","","","22","single",1
-"What 2 + 92 ","4","2","22","0","","","22","single",1
-"What 2 + 95 ","4","2","22","0","","","22","single",1
-"What 2 + 97 ","4","2","22","0","","","22","single",1
-"What 2 + 98 ","4","2","22","0","","","22","single",1
-"What 2 + 99 ","4","2","22","0","","","22","single",1
+"What is React primarily used for?","Database management","Building user interfaces","Server-side routing","Operating system development","","","Building user interfaces","single",1
+"Which company developed React?","Google","Microsoft","Meta (Facebook)","Twitter","","","Meta (Facebook)","single",1
+"What is JSX in React?","A CSS framework","A templating engine","A syntax extension for JavaScript","A database query language","","","A syntax extension for JavaScript","single",1
+"In React, what hook is used to manage state in a functional component?","useState","useEffect","useContext","useReducer","","","useState","single",1
+"What is the virtual DOM in React?","A copy of the real DOM stored in memory","A database for components","A CSS styling mechanism","A special type of event handler","","","A copy of the real DOM stored in memory","single",1
+"Which method is used to render React elements into the DOM in React 18+?","ReactDOM.render","React.renderDOM","createRoot and root.render","ReactDOM.attach","","","createRoot and root.render","single",1
+"Props in React are:","Mutable data","Immutable data passed to components","Methods for handling events","A special type of state","","","Immutable data passed to components","single",1
+"Which hook is used for side effects like fetching data in React?","useState","useEffect","useRef","useMemo","","","useEffect","single",1
+"In React, keys in lists are used to:","Style elements","Help identify elements for efficient updates","Pass props between components","Control re-renders manually","","","Help identify elements for efficient updates","single",1
+"What is the default port when running a React app with Create React App?","3000","8000","5000","8080","","","3000","single",1
+"Which of the following is NOT a React hook?","useState","useEffect","useRouter","useRef","","","useRouter","single",1
+"What is the correct way to pass data from parent to child component?","Using props","Using state","Using context","Using reducer","","","Using props","single",1
+"In React, what is used to handle forms and user input?","Props","Refs","Controlled components","Virtual DOM","","","Controlled components","single",1
+"Which hook would you use for performance optimization to memoize a computed value?","useMemo","useEffect","useReducer","useState","","","useMemo","single",1
+"How many parent elements can a React component return?","Multiple elements","Only one element","At least two elements","Any number","","","Only one element","single",1
+"What is the purpose of useRef in React?","Store previous state","Directly access a DOM element","Store global data","Handle asynchronous calls","","","Directly access a DOM element","single",1
+"What does lifting state up mean in React?","Moving state from parent to child","Moving state from child to parent","Deleting state","Sharing state with Redux","","","Moving state from child to parent","single",1
+"What happens when you call setState in React?","It immediately updates the state","It schedules a re-render with the updated state","It deletes the previous state","It pauses the component","","","It schedules a re-render with the updated state","single",1
+"Which React feature helps to split code and load components lazily?","React.lazy and Suspense","useDeferredValue","CodeReducer","React.Fragment","","","React.lazy and Suspense","single",1
+"What is React.StrictMode used for?","Enforces type checking","Highlights potential problems in development","Prevents re-renders","Improves production performance","","","Highlights potential problems in development","single",1
